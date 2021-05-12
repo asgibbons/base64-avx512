@@ -15,7 +15,8 @@ BASE64 	= src/base64/chromiumbase64.o \
 	  src/base64/decode_base64_avx512vbmi.o \
 	  src/base64/encode_base64_avx512vl.o \
 	  src/base64/decode_base64_avx512vbmi_despace.o \
-	  src/base64/decode_base64_avx512vbmi__unrolled.o
+	  src/base64/decode_base64_avx512vbmi__unrolled.o \
+	  src/base64/decode_base64_tail_avx512vbmi.o
 HELPERS = src/load_file.o
 BINOBJS	= src/unit.o \
 	  src/unit_tail.o \
