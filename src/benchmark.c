@@ -92,6 +92,10 @@ void testdecode(const char *data, size_t datalength, bool verbose) {
   MEASURE_SPEED("AVX2", fast_avx2_base64_decode(buffer, data, datalength),
                 speedrepeat, statspeed, datalength, verbose);
   MEASURE_SPEED("AVX-512",
+                decode_base64_avx512vbmi(
+                    (uint8_t *)buffer, (const uint8_t *)data, datalength),
+                speedrepeat, statspeed, datalength, verbose);
+  MEASURE_SPEED("AVX-512 unrolled",
                 decode_base64_avx512vbmi__unrolled(
                     (uint8_t *)buffer, (const uint8_t *)data, datalength),
                 speedrepeat, statspeed, datalength, verbose);
@@ -189,7 +193,7 @@ int main(int argc, char *argv[]) {
   strcpy(realfilename, outputdir);
   realfilename[dirlen] = '/';
   strcpy(realfilename + dirlen + 1, realfilenamej);
-  printf("All speepds are normalized based on the base64 data size.\n");
+  printf("All speeds are normalized based on the base64 data size.\n");
   printf("See files %s %s %s... \n", encodingfilename, decodingfilename,
          realfilename);
   if (freopen(decodingfilename, "w", stdout) == NULL) {

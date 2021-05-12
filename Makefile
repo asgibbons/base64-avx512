@@ -7,7 +7,7 @@
 ######
 CFLAGS	+= -O3 -std=c99 -Wall -Wextra -pedantic -Iinclude
 #FLAGS+=-march=native
-CFLAGS	+= -march=cannonlake
+CFLAGS	+= -march=icelake-server
 
 BASE64 	= src/base64/chromiumbase64.o \
 	  src/base64/fastavxbase64.o \

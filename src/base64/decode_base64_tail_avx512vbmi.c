@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <immintrin.h>
 
-int decode_base64_tail_avx512vbmi(uint8_t* dst, const uint8_t* src, size_t size) {
+inline __attribute__((always_inline)) int decode_base64_tail_avx512vbmi(uint8_t* dst, const uint8_t* src, size_t size) {
 
     const char BASE64_PAD = '=';
 
