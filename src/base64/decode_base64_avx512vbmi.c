@@ -69,7 +69,7 @@ size_t decode_base64_avx512vbmi(uint8_t* dst, const uint8_t* src, size_t size) {
     if (_mm512_movepi8_mask(errorvec) != 0)
         return (size_t)-1;
 
-    int scalar = decode_base64_tail_avx512vbmi(dst, src, size);
+    int scalar = decode_base64_tail_avx512vbmi(dst, src, size, lookup_0, lookup_1);
     if (scalar < 0)
         return (size_t)-1;
 

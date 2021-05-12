@@ -95,9 +95,13 @@ void testdecode(const char *data, size_t datalength, bool verbose) {
                 decode_base64_avx512vbmi(
                     (uint8_t *)buffer, (const uint8_t *)data, datalength),
                 speedrepeat, statspeed, datalength, verbose);
+  // MEASURE_SPEED("AVX-512 unrolled",
+  //               decode_base64_avx512vbmi__unrolled(
+  //                   (uint8_t *)buffer, (const uint8_t *)data, datalength),
+  //               speedrepeat, statspeed, datalength, verbose);
   MEASURE_SPEED("AVX-512 unrolled",
-                decode_base64_avx512vbmi__unrolled(
-                    (uint8_t *)buffer, (const uint8_t *)data, datalength),
+                decodeBlock((uint8_t *)buffer, 0, datalength + 1, 
+                (const uint8_t *)data, 0, 0),
                 speedrepeat, statspeed, datalength, verbose);
   aligned_free(buffer);
   if (verbose)

@@ -7,7 +7,24 @@
 // Note: constants lookup_lo, lookup_hi, joinXX were
 // generated with scripts/avx512vbmi_decode_lookups.py
 // loads inputs of 64 * 4 = 256 bytes at a time.
-size_t decode_base64_avx512vbmi__unrolled(uint8_t* dst, const uint8_t* src, size_t size) {
+// private void decodeBlock(byte[] src, int sp, int sl, byte[] dst, int dp, boolean isURL) {
+
+//#define BLK_SIZE 4328;
+
+size_t decodeBlock(unsigned char *src, int start_offset, int end_offset, unsigned char *dst, int dst_offset, int isURL) {
+//    unsigned char *start;
+//    unsigned char *pdst;
+    int size = end_offset - start_offset;
+//    int num_blocks = length / BLK_SIZE;
+
+    if(size <= 0) return 0;
+//    if(num_blocks * BLK_SIZE != length) num_blocks++;
+
+    src += start_offset;
+    dst += dst_offset;
+//}
+//
+//size_t decode_base64_avx512vbmi__unrolled(uint8_t* dst, const uint8_t* src, size_t size) {
 
     const __m512i lookup_0 = _mm512_setr_epi32(
                                 0x80808080, 0x80808080, 0x80808080, 0x80808080,
@@ -19,6 +36,19 @@ size_t decode_base64_avx512vbmi__unrolled(uint8_t* dst, const uint8_t* src, size
                                 0x1211100f, 0x16151413, 0x80191817, 0x80808080,
                                 0x1c1b1a80, 0x201f1e1d, 0x24232221, 0x28272625,
                                 0x2c2b2a29, 0x302f2e2d, 0x80333231, 0x80808080);
+
+    if(isURL){
+        lookup_0 = _mm512_setr_epi32(
+                                0x80808080, 0x80808080, 0x80808080, 0x80808080,
+                                0x80808080, 0x80808080, 0x80808080, 0x80808080,
+                                0x80808080, 0x80808080, 0x80808080, 0x80803e80,
+                                0x37363534, 0x3b3a3938, 0x80803d3c, 0x80808080);
+        lookup_1 = _mm512_setr_epi32(
+                                0x02010080, 0x06050403, 0x0a090807, 0x0e0d0c0b,
+                                0x1211100f, 0x16151413, 0x80191817, 0x3f808080,
+                                0x1c1b1a80, 0x201f1e1d, 0x24232221, 0x28272625,
+                                0x2c2b2a29, 0x302f2e2d, 0x80333231, 0x80808080);
+    }
 
     uint8_t* start = dst;
     const int OR_ALL = 0xfe; // function "a or b or c"
@@ -41,7 +71,7 @@ size_t decode_base64_avx512vbmi__unrolled(uint8_t* dst, const uint8_t* src, size
         const __m512i t0 = _mm512_ternarylogic_epi32(input0, input1, input2, OR_ALL);
         const __m512i t1 = _mm512_ternarylogic_epi32(input3, translated0, translated1, OR_ALL);
         const __m512i t2 = _mm512_ternarylogic_epi32(translated2, translated3, t0, OR_ALL);
-        errorvec = _mm512_ternarylogic_epi32(t0, t1, t2, OR_ALL);
+        errorvec |= _mm512_ternarylogic_epi32(t0, t1, t2, OR_ALL);
 
         // 3. pack four 6-bit values into 24-bit words (all within 32-bit lanes)
         // Note: exactly the same procedure as we have in AVX2 version
@@ -122,7 +152,8 @@ size_t decode_base64_avx512vbmi__unrolled(uint8_t* dst, const uint8_t* src, size
     if (_mm512_movepi8_mask(errorvec) != 0)
         return (size_t)-1;
 
-    size_t scalar = chromium_base64_decode((char*)dst, (const char*)src, size);
+//    size_t scalar = chromium_base64_decode((char*)dst, (const char*)src, size);
+    size_t scalar = decode_base64_tail_avx512vbmi((char *)dst, (const char *)src, size, lookup_0, lookup_1);
     if (scalar == MODP_B64_ERROR)
         return (size_t)-1;
 
