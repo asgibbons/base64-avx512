@@ -53,7 +53,7 @@ size_t decodeBlock(unsigned char *src, int start_offset, int end_offset, unsigne
     }
 
     uint8_t* start = dst;
-    const int OR_ALL = 0xfe; // function "a or b or c"
+#define OR_ALL (uint8_t)0xfe
     __m512i errorvec = _mm512_setzero_si512();
     while (size >= 64*4) {
 
