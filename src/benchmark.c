@@ -101,7 +101,7 @@ void testdecode(const char *data, size_t datalength, bool verbose) {
   //               speedrepeat, statspeed, datalength, verbose);
   MEASURE_SPEED("AVX-512 unrolled",
                 decodeBlock((uint8_t *)buffer, 0, datalength + 1, 
-                (const uint8_t *)data, 0, 0),
+                (uint8_t *)data, 0, 0),
                 speedrepeat, statspeed, datalength, verbose);
   aligned_free(buffer);
   if (verbose)
