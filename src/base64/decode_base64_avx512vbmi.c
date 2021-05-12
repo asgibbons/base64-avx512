@@ -38,7 +38,7 @@ size_t decode_base64_avx512vbmi(uint8_t* dst, const uint8_t* src, size_t size) {
         __m512i translated = _mm512_permutex2var_epi8(lookup_0, input, lookup_1);
 
         // 2a. check for errors --- convert MSBs to a mask (note: we're reporting error at the end)
-        const int OR_ALL = 0xfe;
+#define OR_ALL (uint8_t)0xfe
         errorvec = _mm512_ternarylogic_epi32(errorvec, translated, input, OR_ALL);
 
         // 3. pack four 6-bit values into 24-bit words (all within 32-bit lanes)
