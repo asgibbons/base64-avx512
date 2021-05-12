@@ -4,6 +4,8 @@
 #include <assert.h>
 #include <immintrin.h>
 
+extern int decode_base64_tail_avx512vbmi(uint8_t* dst, const uint8_t* src, size_t size, __m512i lookup_0, __m512i lookup_1);
+
 // Note: constants lookup_lo, lookup_hi, joinXX were
 // generated with scripts/avx512vbmi_decode_lookups.py
 // loads inputs of 64 * 4 = 256 bytes at a time.
