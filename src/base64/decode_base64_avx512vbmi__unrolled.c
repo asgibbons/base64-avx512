@@ -155,7 +155,7 @@ size_t decodeBlock(unsigned char *src, int start_offset, int end_offset, unsigne
         return (size_t)-1;
 
 //    size_t scalar = chromium_base64_decode((char*)dst, (const char*)src, size);
-    size_t scalar = decode_base64_tail_avx512vbmi((char *)dst, (const char *)src, size, lookup_0, lookup_1);
+    size_t scalar = decode_base64_tail_avx512vbmi((uint8_t *)dst, (const uint8_t *)src, size, lookup_0, lookup_1);
     if (scalar == MODP_B64_ERROR)
         return (size_t)-1;
 
