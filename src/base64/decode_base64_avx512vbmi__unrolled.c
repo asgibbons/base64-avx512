@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <immintrin.h>
 
-#include "base64/decode_base64_tail_avx512vbmi.c"
+#include "decode_base64_tail_avx512vbmi.c"
 
 // Note: constants lookup_lo, lookup_hi, joinXX were
 // generated with scripts/avx512vbmi_decode_lookups.py
