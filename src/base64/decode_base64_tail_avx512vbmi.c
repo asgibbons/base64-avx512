@@ -6,6 +6,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <immintrin.h>
+#include <assert.h>
 
 inline __attribute__((always_inline)) int decode_base64_tail_avx512vbmi(uint8_t* dst, const uint8_t* src, size_t size, __m512i lookup_0, __m512i lookup_1) {
 
