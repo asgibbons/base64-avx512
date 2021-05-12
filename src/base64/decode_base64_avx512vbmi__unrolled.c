@@ -26,12 +26,12 @@ size_t decodeBlock(unsigned char *src, int start_offset, int end_offset, unsigne
 //
 //size_t decode_base64_avx512vbmi__unrolled(uint8_t* dst, const uint8_t* src, size_t size) {
 
-    const __m512i lookup_0 = _mm512_setr_epi32(
+    __m512i lookup_0 = _mm512_setr_epi32(
                                 0x80808080, 0x80808080, 0x80808080, 0x80808080,
                                 0x80808080, 0x80808080, 0x80808080, 0x80808080,
                                 0x80808080, 0x80808080, 0x3e808080, 0x3f808080,
                                 0x37363534, 0x3b3a3938, 0x80803d3c, 0x80808080);
-    const __m512i lookup_1 = _mm512_setr_epi32(
+    __m512i lookup_1 = _mm512_setr_epi32(
                                 0x02010080, 0x06050403, 0x0a090807, 0x0e0d0c0b,
                                 0x1211100f, 0x16151413, 0x80191817, 0x80808080,
                                 0x1c1b1a80, 0x201f1e1d, 0x24232221, 0x28272625,
